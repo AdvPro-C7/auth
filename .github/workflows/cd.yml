@@ -1,13 +1,8 @@
 name: Continous Deployment (CD)
 
 on:
-  workflow_run:
-    workflows:
-      - "Continous Integration (CI)"
-    branches:
-      - main
-    types:
-      - completed
+  push:
+  pull_request:
 
 jobs:
   build:
@@ -28,15 +23,12 @@ jobs:
       - name: Configure Docker
         run: |
           gcloud auth configure-docker
-
       - name: Build
         run: |
           docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/auth:latest .
-
       - name: Push
         run: |
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/auth:latest
-
       - name: Deploy
         run: |
           gcloud run deploy auth \
