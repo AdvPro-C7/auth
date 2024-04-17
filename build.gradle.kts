@@ -1,9 +1,9 @@
 plugins {
-    id("io.spring.dependency-management") version "1.1.0"
+	id("io.spring.dependency-management") version "1.1.4"
     id("jacoco")
     id("java")
     id("org.sonarqube") version "3.0"
-    id("org.springframework.boot") version "3.0.5"
+	id("org.springframework.boot") version "3.2.4"
 }
 
 jacoco {
@@ -14,7 +14,7 @@ group = "id.ac.ui.cs.advprog"
 version = "0.0.1-SNAPSHOT"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
 }
 
 configurations {
