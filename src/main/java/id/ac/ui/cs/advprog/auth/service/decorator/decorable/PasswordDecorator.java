@@ -9,9 +9,15 @@ public class PasswordDecorator extends ProfileDecorator {
     private String newPassword;
 
     public PasswordDecorator(UserProfile profile, String newPassword) {
+        super(profile);
+        this.newPassword = newPassword;
     }
 
     @Override
     public void updateProfile() {
+        User user = ((Profile) decoratedProfile).getUser();
+        user.setPassword(newPassword);
+        System.out.println("Updating password to: " + newPassword);
+        super.updateProfile();
     }
 }

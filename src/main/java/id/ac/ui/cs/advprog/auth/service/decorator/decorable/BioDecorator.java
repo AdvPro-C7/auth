@@ -9,9 +9,15 @@ public class BioDecorator extends ProfileDecorator {
     private String newBio;
 
     public BioDecorator(UserProfile profile, String newBio) {
+        super(profile);
+        this.newBio = newBio;
     }
 
     @Override
     public void updateProfile() {
+        User user = ((Profile) decoratedProfile).getUser();
+        user.setBio(newBio);
+        System.out.println("Updating bio to: " + newBio);
+        super.updateProfile();
     }
 }

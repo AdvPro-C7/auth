@@ -11,10 +11,16 @@ public class BirthDateDecorator extends ProfileDecorator {
     private LocalDate newBirthDate;
 
     public BirthDateDecorator(UserProfile profile, LocalDate newBirthDate) {
+        super(profile);
+        this.newBirthDate = newBirthDate;
     }
 
     @Override
     public void updateProfile() {
+        User user = ((Profile) decoratedProfile).getUser();
+        user.setTanggalLahir(newBirthDate);
+        System.out.println("Updating birth date to: " + newBirthDate);
+        super.updateProfile();
     }
 }
 

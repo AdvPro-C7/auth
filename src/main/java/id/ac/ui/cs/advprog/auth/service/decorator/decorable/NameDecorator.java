@@ -9,9 +9,15 @@ public class NameDecorator extends ProfileDecorator {
     private String newName;
 
     public NameDecorator(UserProfile profile, String newName) {
+        super(profile);
+        this.newName = newName;
     }
 
     @Override
     public void updateProfile() {
+        User user = ((Profile) decoratedProfile).getUser();
+        user.setNama(newName);
+        System.out.println("Updating name to: " + newName);
+        super.updateProfile();
     }
 }
