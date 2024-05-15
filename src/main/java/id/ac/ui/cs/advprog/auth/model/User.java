@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
@@ -12,6 +13,7 @@ import lombok.Getter;
         @UniqueConstraint(columnNames = "email"),
         @UniqueConstraint(columnNames = "no_telp"),
 })
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,10 +51,13 @@ public class User {
     @Column(name = "jumlah_peringatan")
     private int jumlahPeringatan;
 
+    private String role;
+
     public User(String nama, String email, String noTelp, String password) {
         this.nama = nama;
         this.email = email;
         this.noTelp = noTelp;
         this.password = password;
+        this.role = "pelanggan";
     }
 }

@@ -124,7 +124,7 @@ class AuthenticationControllerTest {
                 // Act
                 this.design.perform(get("/authenticate"))
                                 .andExpect(status().isOk())
-                                .andExpect(content().json("{\"user-details\": \"" + userDetails.toString() + "\"}"));
+                                .andExpect(content().json(new ObjectMapper().writeValueAsString(userDetails)));
 
                 // Assert
                 Mockito.verify(this.service, atLeastOnce()).getUserDetails(Mockito.any(MockHttpServletRequest.class));

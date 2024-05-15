@@ -44,10 +44,10 @@ public class AuthenticationController {
     }
 
     @GetMapping("/authenticate")
-    public ResponseEntity<Map<String, String>> authenticateAndGetUserDetails(HttpServletRequest httpRequest) {
+    public ResponseEntity<User> authenticateAndGetUserDetails(HttpServletRequest httpRequest) {
         User retrievedUserDetails = this.service.getUserDetails(httpRequest);
         return retrievedUserDetails != null
-                ? ResponseEntity.ok(Collections.singletonMap("user-details", retrievedUserDetails.toString()))
-                : ResponseEntity.badRequest().body(Collections.singletonMap("message", "invalid token"));
+                ? ResponseEntity.ok(retrievedUserDetails)
+                : ResponseEntity.badRequest().body(null);
     }
 }

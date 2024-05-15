@@ -25,19 +25,20 @@ public class AuthenticationReceiverImpl implements AuthenticationReceiver {
         this.props = props;
     }
 
-    private String generateJWT(String name) {
-        if (name == null) {
+    private String generateJWT(String id) {
+        if (id == null) {
             return "";
         } else {
             var now = Instant.now();
             Instant expiration = now.plusSeconds(86400);
             var expirationDate = Date.from(expiration);
 
-            return Jwts
-                    .builder().setSubject(name)
+            return Jwts.builder()
+                    .setSubject(id)
                     .setIssuedAt(new Date())
                     .setExpiration(expirationDate)
-                    .signWith(SignatureAlgorithm.HS512, this.props.getSecret()).compact();
+                    .signWith(SignatureAlgorithm.HS512, this.props.getSecret())
+                    .compact();
         }
     }
 
@@ -80,9 +81,13 @@ public class AuthenticationReceiverImpl implements AuthenticationReceiver {
     }
 
     @Override
-    public ResponseCookie createToken(String name) {
-        return ResponseCookie.from(this.props.getKey(), generateJWT(name))
-                .path("/").httpOnly(true).sameSite("None").maxAge(86400).build();
+    public ResponseCookie createToken(String id) {
+        return ResponseCookie
+                .from(this.props.getKey(), generateJWT(id))
+                .path("/")
+                .sameSite("Strict")
+                .maxAge(86400)
+                .build();
     }
 
     @Override
@@ -126,7 +131,10 @@ public class AuthenticationReceiverImpl implements AuthenticationReceiver {
         }
 
         this.repo
-                .save(new User(httpRequest.getName(), httpRequest.getEmailAddress(), httpRequest.getPhoneNumber(),
+                .save(new User(
+                        httpRequest.getName(),
+                        httpRequest.getEmailAddress(),
+                        httpRequest.getPhoneNumber(),
                         httpRequest.getPassword()));
 
         return true;
