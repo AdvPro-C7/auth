@@ -85,7 +85,7 @@ public class AuthenticationReceiverImpl implements AuthenticationReceiver {
         return ResponseCookie
                 .from(this.props.getKey(), generateJWT(id))
                 .path("/")
-                .sameSite("Strict")
+                .sameSite("Lax")
                 .maxAge(86400)
                 .build();
     }
