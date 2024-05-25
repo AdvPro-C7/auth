@@ -1,98 +1,115 @@
 package id.ac.ui.cs.advprog.auth.service;
 
-import id.ac.ui.cs.advprog.auth.AppProperties;
 import id.ac.ui.cs.advprog.auth.model.User;
 import id.ac.ui.cs.advprog.auth.model.request.LoginRequest;
 import id.ac.ui.cs.advprog.auth.model.request.RegisterRequest;
 import id.ac.ui.cs.advprog.auth.repository.UserRepository;
 import id.ac.ui.cs.advprog.auth.service.receiver.AuthenticationReceiverImpl;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseCookie;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@ExtendWith(MockitoExtension.class)
 class ReceiverTest {
-    @Mock
-    private UserRepository repo;
-
-    @Mock
-    private AppProperties props;
-
-    @InjectMocks
-    private AuthenticationReceiverImpl authenticationReceiver;
 
     @Test
-    void testAuthenticateUser() {
+    void authenticateUser_ValidRequest_ReturnsUser() {
         // Arrange
-        LoginRequest loginRequest = new LoginRequest("whoami@hotmail.com", "helloworld");
-        when(repo.existsByEmail(anyString())).thenReturn(true);
-        when(repo.findByEmail(anyString()))
-                .thenReturn(new User("bryan", "whoami@hotmail.com", "00008888", "helloworld"));
-        ReflectionTestUtils.setField(this.authenticationReceiver, "repo", repo);
+        LoginRequest request = new LoginRequest("testId", "testPassword");
+        User user = new User("testName", "testEmail", "testPhone", "testPassword");
+        UserRepository repo = mock(UserRepository.class);
+        when(repo.existsByEmail(request.getId())).thenReturn(true);
+        when(repo.findByEmail(request.getId())).thenReturn(user);
+
+        AuthenticationReceiverImpl receiver = new AuthenticationReceiverImpl(repo);
 
         // Act
-        Boolean result = authenticationReceiver.authenticateUser(loginRequest);
+        User result = receiver.authenticateUser(request);
 
         // Assert
-        assertTrue(result);
+        assertEquals(user, result);
     }
 
     @Test
-    void testCreateToken() {
+    void authenticateUser_InvalidRequest_ReturnsNull() {
         // Arrange
-        when(props.getKey()).thenReturn("key");
-        when(props.getSecret()).thenReturn("secret");
-        ReflectionTestUtils.setField(this.authenticationReceiver, "props", props);
+        LoginRequest request = new LoginRequest(null, null);
+        UserRepository repo = mock(UserRepository.class);
+
+        AuthenticationReceiverImpl receiver = new AuthenticationReceiverImpl(repo);
 
         // Act
-        ResponseCookie result = authenticationReceiver.createToken("bryan");
+        User result = receiver.authenticateUser(request);
 
         // Assert
-        assertNotNull(result);
+        assertEquals(null, result);
     }
 
     @Test
-    void testGetUserDetails() {
+    void getUserDetails_ValidUID_ReturnsUser() {
         // Arrange
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        when(props.getKey()).thenReturn("key");
-        when(props.getSecret()).thenReturn("secret");
-        when(repo.existsByEmail(anyString())).thenReturn(true);
-        when(repo.findByEmail(anyString()))
-                .thenReturn(new User("bryan", "whoami@hotmail.com", "00008888", "helloworld"));
-        ReflectionTestUtils.setField(this.authenticationReceiver, "props", props);
-        ReflectionTestUtils.setField(this.authenticationReceiver, "repo", repo);
+        String uid = "testUID";
+        User user = new User("testName", "testEmail", "testPhone", "testPassword");
+        UserRepository repo = mock(UserRepository.class);
+        when(repo.existsByEmail(uid)).thenReturn(true);
+        when(repo.findByEmail(uid)).thenReturn(user);
+
+        AuthenticationReceiverImpl receiver = new AuthenticationReceiverImpl(repo);
 
         // Act
-        User result = authenticationReceiver.getUserDetails(request);
+        User result = receiver.getUserDetails(uid);
 
         // Assert
-        assertNotNull(result);
+        assertEquals(user, result);
     }
 
     @Test
-    void testInsertUser() {
+    void getUserDetails_InvalidUID_ReturnsNull() {
         // Arrange
-        RegisterRequest registerRequest = new RegisterRequest("bryan", "whoami@hotmail.com", "00008888",
-                "helloworld");
-        when(repo.existsByEmail(anyString())).thenReturn(false);
-        when(repo.existsByNoTelp(anyString())).thenReturn(false);
-        ReflectionTestUtils.setField(this.authenticationReceiver, "repo", repo);
+        String uid = "invalidUID";
+        UserRepository repo = mock(UserRepository.class);
+
+        AuthenticationReceiverImpl receiver = new AuthenticationReceiverImpl(repo);
 
         // Act
-        Boolean result = authenticationReceiver.insertUser(registerRequest);
+        User result = receiver.getUserDetails(uid);
 
         // Assert
-        assertTrue(result);
+        assertEquals(null, result);
+    }
+
+    @Test
+    void insertUser_ValidRequest_ReturnsTrue() {
+        // Arrange
+        RegisterRequest request = new RegisterRequest("testName", "testEmail", "testPhone", "testPassword");
+        UserRepository repo = mock(UserRepository.class);
+        when(repo.existsByEmail(request.getEmailAddress())).thenReturn(false);
+        when(repo.existsByNoTelp(request.getPhoneNumber())).thenReturn(false);
+
+        AuthenticationReceiverImpl receiver = new AuthenticationReceiverImpl(repo);
+
+        // Act
+        Boolean result = receiver.insertUser(request);
+
+        // Assert
+        assertEquals(true, result);
+    }
+
+    @Test
+    void insertUser_InvalidRequest_ReturnsFalse() {
+        // Arrange
+        RegisterRequest request = new RegisterRequest(null, null, null, null);
+        UserRepository repo = mock(UserRepository.class);
+
+        AuthenticationReceiverImpl receiver = new AuthenticationReceiverImpl(repo);
+
+        // Act
+        Boolean result = receiver.insertUser(request);
+
+        // Assert
+        assertEquals(false, result);
     }
 }

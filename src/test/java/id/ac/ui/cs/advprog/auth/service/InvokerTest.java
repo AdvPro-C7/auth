@@ -4,74 +4,74 @@ import id.ac.ui.cs.advprog.auth.model.User;
 import id.ac.ui.cs.advprog.auth.model.request.LoginRequest;
 import id.ac.ui.cs.advprog.auth.model.request.RegisterRequest;
 import id.ac.ui.cs.advprog.auth.service.command.AuthenticateUserCommand;
-import id.ac.ui.cs.advprog.auth.service.command.CreateTokenCommand;
 import id.ac.ui.cs.advprog.auth.service.command.GetUserDetailsCommand;
 import id.ac.ui.cs.advprog.auth.service.command.InsertUserCommand;
 import id.ac.ui.cs.advprog.auth.service.invoker.AuthenticationInvokerImpl;
-import jakarta.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseCookie;
-import org.springframework.test.util.ReflectionTestUtils;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@ExtendWith(MockitoExtension.class)
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 class InvokerTest {
 
-    @Autowired
-    private AuthenticationInvokerImpl service;
-
     @Test
-    void testAuthenticateUser() {
-        var authenticateUserCommand = mock(AuthenticateUserCommand.class);
-        ReflectionTestUtils.setField(this.service, "varAuthenticateUserCommand", authenticateUserCommand);
+    void authenticateUser_ValidRequest_ReturnsUser() {
+        // Arrange
+        LoginRequest request = mock(LoginRequest.class);
+        User user = mock(User.class);
+        AuthenticateUserCommand userAuthenticator = mock(AuthenticateUserCommand.class);
+        when(userAuthenticator.execute(any(LoginRequest.class))).thenReturn(user);
 
-        var loginRequest = new LoginRequest();
-        when(authenticateUserCommand.execute(loginRequest)).thenReturn(true);
+        AuthenticationInvokerImpl invoker = new AuthenticationInvokerImpl(
+                userAuthenticator,
+                mock(GetUserDetailsCommand.class),
+                mock(InsertUserCommand.class));
 
-        assertTrue(this.service.authenticateUser(loginRequest));
-        verify(authenticateUserCommand).execute(loginRequest);
+        // Act
+        User result = invoker.authenticateUser(request);
+
+        // Assert
+        assertEquals(user, result);
     }
 
     @Test
-    void testCreateToken() {
-        var createTokenCommand = mock(CreateTokenCommand.class);
-        ReflectionTestUtils.setField(this.service, "varCreateTokenCommand", createTokenCommand);
+    void getUserDetails_ValidUid_ReturnsUser() {
+        // Arrange
+        String uid = "testUid";
+        User user = mock(User.class);
+        GetUserDetailsCommand userDetailsRetriever = mock(GetUserDetailsCommand.class);
+        when(userDetailsRetriever.execute(uid)).thenReturn(user);
 
-        var responseCookie = ResponseCookie.from("token", "value").build();
-        when(createTokenCommand.execute("bryan")).thenReturn(responseCookie);
+        AuthenticationInvokerImpl invoker = new AuthenticationInvokerImpl(
+                mock(AuthenticateUserCommand.class),
+                userDetailsRetriever,
+                mock(InsertUserCommand.class));
 
-        assertEquals(responseCookie, this.service.createToken("bryan"));
-        verify(createTokenCommand).execute("bryan");
+        // Act
+        User result = invoker.getUserDetails(uid);
+
+        // Assert
+        assertEquals(user, result);
     }
 
     @Test
-    void testGetUserDetails() {
-        var getUserDetailsCommand = mock(GetUserDetailsCommand.class);
-        ReflectionTestUtils.setField(this.service, "varGetUserDetailsCommand", getUserDetailsCommand);
+    void insertUser_ValidRequest_ReturnsTrue() {
+        // Arrange
+        RegisterRequest request = mock(RegisterRequest.class);
+        InsertUserCommand userInserter = mock(InsertUserCommand.class);
+        when(userInserter.execute(any(RegisterRequest.class))).thenReturn(true);
 
-        var request = mock(HttpServletRequest.class);
-        var userDetails = new User("bryan", "bryanilman20@gmail.com", "00008888", "helloworld");
-        when(getUserDetailsCommand.execute(request)).thenReturn(userDetails);
+        AuthenticationInvokerImpl invoker = new AuthenticationInvokerImpl(
+                mock(AuthenticateUserCommand.class),
+                mock(GetUserDetailsCommand.class),
+                userInserter);
 
-        assertEquals(userDetails, this.service.getUserDetails(request));
-        verify(getUserDetailsCommand).execute(request);
-    }
+        // Act
+        Boolean result = invoker.insertUser(request);
 
-    @Test
-    void testInsertUser() {
-        var insertUserCommand = mock(InsertUserCommand.class);
-        ReflectionTestUtils.setField(this.service, "varInsertUserCommand", insertUserCommand);
-
-        var registerRequest = new RegisterRequest("bryan", "bryanilman20@gmail.com", "00008888", "helloworld");
-        when(insertUserCommand.execute(registerRequest)).thenReturn(true);
-
-        assertEquals(true, this.service.insertUser(registerRequest));
-        verify(insertUserCommand).execute(registerRequest);
+        // Assert
+        assertEquals(true, result);
     }
 }

@@ -1,10 +1,9 @@
 package id.ac.ui.cs.advprog.auth.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,20 +31,23 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> loginUser(@Valid @RequestBody LoginRequest httpRequest) {
-        if (this.service.authenticateUser(httpRequest)) {
-            String token = this.service.createToken(httpRequest.getId()).toString();
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.SET_COOKIE, token);
-            return ResponseEntity.ok().headers(headers).body(Collections.singletonMap("message", "login successful"));
+    public ResponseEntity<Map<String, Object>> loginUser(@Valid @RequestBody LoginRequest httpRequest) {
+        User savedUser = this.service.authenticateUser(httpRequest);
+
+        if (savedUser != null) {
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "login successful");
+            responseBody.put("user", savedUser);
+
+            return ResponseEntity.ok().body(responseBody);
         } else {
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "invalid credentials"));
         }
     }
 
-    @GetMapping("/authenticate")
-    public ResponseEntity<User> authenticateAndGetUserDetails(HttpServletRequest httpRequest) {
-        User retrievedUserDetails = this.service.getUserDetails(httpRequest);
+    @GetMapping("/get-user-details")
+    public ResponseEntity<User> getUserDetails(String uid) {
+        User retrievedUserDetails = this.service.getUserDetails(uid);
         return retrievedUserDetails != null
                 ? ResponseEntity.ok(retrievedUserDetails)
                 : ResponseEntity.badRequest().body(null);
