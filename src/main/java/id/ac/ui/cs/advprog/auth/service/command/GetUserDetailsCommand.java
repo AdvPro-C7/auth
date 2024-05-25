@@ -1,13 +1,12 @@
 package id.ac.ui.cs.advprog.auth.service.command;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Component;
-
 import id.ac.ui.cs.advprog.auth.model.User;
 import id.ac.ui.cs.advprog.auth.service.receiver.AuthenticationReceiverImpl;
 
+import org.springframework.stereotype.Component;
+
 @Component
-public class GetUserDetailsCommand implements Command<HttpServletRequest, User> {
+public class GetUserDetailsCommand implements Command<String, User> {
     private final AuthenticationReceiverImpl receiver;
 
     public GetUserDetailsCommand(AuthenticationReceiverImpl receiver) {
@@ -15,7 +14,7 @@ public class GetUserDetailsCommand implements Command<HttpServletRequest, User> 
     }
 
     @Override
-    public User execute(HttpServletRequest httpRequest) {
-        return this.receiver.getUserDetails(httpRequest);
+    public User execute(String uid) {
+        return this.receiver.getUserDetails(uid);
     }
 }
