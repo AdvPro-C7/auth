@@ -8,6 +8,10 @@
 
 # AdvProg - C7 📚
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=auth)
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=auth&metric=coverage)](https://sonarcloud.io/summary/new_code?id=auth) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=auth&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=auth) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=auth&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=auth)
+
 ## 👥 Nama Anggota Kelompok C7 👥
 
 - [Venedict Chen](https://github.com/venedictchen) - 2206024436
