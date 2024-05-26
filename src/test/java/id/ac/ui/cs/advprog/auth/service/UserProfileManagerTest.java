@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import id.ac.ui.cs.advprog.auth.model.User;
 import id.ac.ui.cs.advprog.auth.service.builder.UserProfileManager;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.LocalDate;
 
@@ -15,14 +14,14 @@ class UserProfileManagerTest {
     private User user;
 
     @SuppressWarnings("unused")
-    private byte[] originalPhoto;
-    private byte[] newPhoto;
+    private String originalPhoto;
+    private String newPhoto;
 
     @BeforeEach
     void setUp() {
         user = new User("John Doe", "john@example.com", "0123456789", "password123");
         userProfileManager = new UserProfileManager();
-        originalPhoto = new byte[]{1}; 
+        originalPhoto = "1"; 
     }
 
     @Test
@@ -41,9 +40,9 @@ class UserProfileManagerTest {
 
     @Test
     void testConstructPhotoProfile() {
-        newPhoto = new byte[]{2}; // New photo data
+        newPhoto = "2"; // New photo data
         User updatedUser = userProfileManager.constructPhotoProfile(user, newPhoto);
-        assertArrayEquals(newPhoto, updatedUser.getFoto(), "Photo should be updated to the new byte array.");
+        assertEquals(newPhoto, updatedUser.getFoto(), "Photo should be updated to the new string.");
     }
 
     @Test

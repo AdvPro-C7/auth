@@ -2,8 +2,11 @@ package id.ac.ui.cs.advprog.auth.service.builder;
 
 import java.time.LocalDate;
 
+import org.springframework.stereotype.Service;
+
 import id.ac.ui.cs.advprog.auth.model.User;
 
+@Service
 public class UserProfileManager {
 
     public User constructProfilInfo(User user) {
