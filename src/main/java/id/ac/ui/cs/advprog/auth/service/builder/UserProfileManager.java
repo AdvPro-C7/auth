@@ -12,7 +12,7 @@ public class UserProfileManager {
                 .build();
     }
 
-    public User constructPhotoProfile(User user, byte[] newPhoto) {
+    public User constructPhotoProfile(User user, String newPhoto) {
         return new UserProfileBuilder(user)
                 .updatePhoto(newPhoto)
                 .build();

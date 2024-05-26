@@ -1,6 +1,8 @@
-package id.ac.ui.cs.advprog.auth.service.builder;
+package id.ac.ui.cs.advprog.auth.model;
 
 import java.time.LocalDate;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public class UserProfileUpdateDTO {
     private String name;
@@ -8,11 +10,11 @@ public class UserProfileUpdateDTO {
     private String bio;
     private String gender;
     private String password;
-    private String photo;
+    private MultipartFile photo;
 
     public UserProfileUpdateDTO() {}
 
-    public UserProfileUpdateDTO(String name, LocalDate birthDate, String bio, String gender, String password, String photo) {
+    public UserProfileUpdateDTO(String name, LocalDate birthDate, String bio, String gender, String password, MultipartFile photo) {
         this.name = name;
         this.birthDate = birthDate;
         this.bio = bio; 
@@ -37,7 +39,7 @@ public class UserProfileUpdateDTO {
     public void setPassword(String newPassword) {
         this.password = newPassword;
     }
-    public void setPhoto(String newPhoto) {
+    public void setPhoto(MultipartFile newPhoto) {
         this.photo = newPhoto;
     }
 
@@ -57,7 +59,7 @@ public class UserProfileUpdateDTO {
     public String getPassword() {
         return password;
     }
-    public String getPhoto() {
+    public MultipartFile getPhoto() {
         return photo;
     }
 }

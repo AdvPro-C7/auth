@@ -37,7 +37,7 @@ public class ProfileController {
             user = userProfileManager.constructPasswordProfile(user, updates.getPassword());
         }
         if (updates.getPhoto() != null) {
-            byte[] newPhoto = updates.getPhoto().getBytes();
+            String newPhoto = updates.getPhoto();
             user = userProfileManager.constructPhotoProfile(user, newPhoto);
         }
 

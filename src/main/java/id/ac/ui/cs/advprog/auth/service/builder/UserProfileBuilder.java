@@ -16,7 +16,7 @@ public class UserProfileBuilder {
         return this;
     }
 
-    public UserProfileBuilder updatePhoto(byte[] newPhoto) {
+    public UserProfileBuilder updatePhoto(String newPhoto) {
         user.setFoto(newPhoto);
         System.out.println("Updating profile photo.");
         return this;
