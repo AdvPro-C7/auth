@@ -10,8 +10,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
 
     User findByNoTelp(String noTelp);
-
-    Boolean existsByEmail(String email);
-
-    Boolean existsByNoTelp(String noTelp);
 }

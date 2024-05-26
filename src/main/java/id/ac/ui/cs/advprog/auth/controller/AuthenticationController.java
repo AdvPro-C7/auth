@@ -20,12 +20,16 @@ public class AuthenticationController {
         this.service = service;
     }
 
+    final String messageLabel = "message";
+
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@Valid @RequestBody RegisterRequest httpRequest) {
-        if (this.service.insertUser(httpRequest)) {
-            return ResponseEntity.ok().body(Collections.singletonMap("message", "registration successful"));
+        boolean userInserted = this.service.insertUser(httpRequest);
+
+        if (userInserted) {
+            return ResponseEntity.ok().body(Collections.singletonMap(messageLabel, "registration successful"));
         } else {
-            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "registration failed"));
+            return ResponseEntity.badRequest().body(Collections.singletonMap(messageLabel, "registration failed"));
         }
     }
 
@@ -35,12 +39,12 @@ public class AuthenticationController {
 
         if (savedUser != null) {
             Map<String, Object> responseBody = new HashMap<>();
-            responseBody.put("message", "login successful");
+            responseBody.put(messageLabel, "login successful");
             responseBody.put("user", savedUser);
 
             return ResponseEntity.ok().body(responseBody);
         } else {
-            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "invalid credentials"));
+            return ResponseEntity.badRequest().body(Collections.singletonMap(messageLabel, "invalid credentials"));
         }
     }
 

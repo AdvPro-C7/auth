@@ -1,10 +1,10 @@
 # Code Diagram (Bryan)
 
-![alt text](./images/auth-code-diagram.png)
+![alt text](images/diagrams/auth-code-diagram.png)
 
 # Component Diagram (Bryan)
 
-![alt text](./images/auth-component-diagram.png)
+![alt text](images/diagrams/auth-component-diagram.png)
 
 # AdvProg - C7 📚
 
