@@ -54,13 +54,15 @@ dependencies {
 	testImplementation("org.springframework.security:spring-security-test")
 }
 
-tasks.named("test") {
-	finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+tasks.test {
+	useJUnitPlatform()
+	finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.jacocoTestReport {
 	dependsOn(tasks.test) // tests are required to run before generating the report
 	reports {
+		html.required.set(true)
 		xml.required.set(true)
 	}
 }

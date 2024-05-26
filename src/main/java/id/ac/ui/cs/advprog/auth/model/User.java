@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Setter
 @Getter
 @Entity
-@Table(name = "users", uniqueConstraints = {
+@Table(name = "\"user\"", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email"),
         @UniqueConstraint(columnNames = "no_telp"),
 })
@@ -39,8 +39,7 @@ public class User {
     @Size(max = 128)
     private String password;
 
-    @Lob
-    private byte[] foto;
+    private String foto;
 
     @Column(name = "jenis_kelamin")
     private String jenisKelamin;
