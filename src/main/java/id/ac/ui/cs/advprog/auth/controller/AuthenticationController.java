@@ -12,7 +12,6 @@ import id.ac.ui.cs.advprog.auth.model.request.LoginRequest;
 import id.ac.ui.cs.advprog.auth.model.request.RegisterRequest;
 import id.ac.ui.cs.advprog.auth.service.invoker.AuthenticationInvokerImpl;
 
-@CrossOrigin()
 @RestController
 public class AuthenticationController {
     private final AuthenticationInvokerImpl service;
