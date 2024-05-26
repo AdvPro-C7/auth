@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -124,6 +125,6 @@ class AuthenticationControllerTest {
 
                 // Assert
                 assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-                assertEquals(null, response.getBody());
+            assertNull(response.getBody());
         }
 }

@@ -1,6 +1,6 @@
 package id.ac.ui.cs.advprog.auth.controller;
 
-import id.ac.ui.cs.advprog.auth.dto.UserProfileUpdateDTO;
+import id.ac.ui.cs.advprog.auth.model.dto.UserProfileUpdateDTO;
 import id.ac.ui.cs.advprog.auth.model.User;
 import id.ac.ui.cs.advprog.auth.service.builder.UserProfileManager;
 import id.ac.ui.cs.advprog.auth.service.invoker.AuthenticationInvokerImpl;
