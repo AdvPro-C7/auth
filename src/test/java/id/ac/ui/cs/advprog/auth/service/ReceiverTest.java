@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -21,7 +22,6 @@ class ReceiverTest {
         LoginRequest request = new LoginRequest("testId", "testPassword");
         User user = new User("testName", "testEmail", "testPhone", "testPassword");
         UserRepository repo = mock(UserRepository.class);
-        when(repo.existsByEmail(request.getId())).thenReturn(true);
         when(repo.findByEmail(request.getId())).thenReturn(user);
 
         AuthenticationReceiverImpl receiver = new AuthenticationReceiverImpl(repo);
@@ -45,7 +45,7 @@ class ReceiverTest {
         User result = receiver.authenticateUser(request);
 
         // Assert
-        assertEquals(null, result);
+        assertNull(result);
     }
 
     @Test
@@ -54,7 +54,6 @@ class ReceiverTest {
         String uid = "testUID";
         User user = new User("testName", "testEmail", "testPhone", "testPassword");
         UserRepository repo = mock(UserRepository.class);
-        when(repo.existsByEmail(uid)).thenReturn(true);
         when(repo.findByEmail(uid)).thenReturn(user);
 
         AuthenticationReceiverImpl receiver = new AuthenticationReceiverImpl(repo);
@@ -78,7 +77,7 @@ class ReceiverTest {
         User result = receiver.getUserDetails(uid);
 
         // Assert
-        assertEquals(null, result);
+        assertNull(result);
     }
 
     @Test
@@ -86,8 +85,8 @@ class ReceiverTest {
         // Arrange
         RegisterRequest request = new RegisterRequest("testName", "testEmail", "testPhone", "testPassword");
         UserRepository repo = mock(UserRepository.class);
-        when(repo.existsByEmail(request.getEmailAddress())).thenReturn(false);
-        when(repo.existsByNoTelp(request.getPhoneNumber())).thenReturn(false);
+        when(repo.findByEmail(request.getEmailAddress())).thenReturn(null);
+        when(repo.findByNoTelp(request.getPhoneNumber())).thenReturn(null);
 
         AuthenticationReceiverImpl receiver = new AuthenticationReceiverImpl(repo);
 
