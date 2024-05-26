@@ -2,9 +2,11 @@ package id.ac.ui.cs.advprog.auth.model.dto;
 
 import java.time.LocalDate;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class UserProfileUpdateDTO {
     private String name;
     private LocalDate birthDate;
