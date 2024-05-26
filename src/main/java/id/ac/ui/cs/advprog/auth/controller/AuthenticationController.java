@@ -20,7 +20,7 @@ public class AuthenticationController {
         this.service = service;
     }
 
-    final String messageLabel = "message";
+    final static String messageLabel = "message";
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@Valid @RequestBody RegisterRequest httpRequest) {

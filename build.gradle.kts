@@ -66,3 +66,9 @@ tasks.jacocoTestReport {
 		xml.required.set(true)
 	}
 }
+
+sonarqube {
+	properties {
+		property("sonar.exclusions", "**/model/**") // replace with your class path
+	}
+}
