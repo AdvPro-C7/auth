@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.auth.dto;
 
+import id.ac.ui.cs.advprog.auth.model.dto.UserProfileUpdateDTO;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
