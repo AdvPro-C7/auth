@@ -29,7 +29,7 @@ public class SecurityConfiguration {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:5500", "https://bukuid-frontend.vercel.app",
-                        "https://auth-b4rcuut5xa-ew.a.run.app","https://admin-hkqa74sxta-ew.a.run.app/")
+                        "https://auth-b4rcuut5xa-ew.a.run.app","https://admin-hkqa74sxta-ew.a.run.app/", "https://functionality-hkqa74sxta-ew.a.run.app/")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                         .allowedHeaders("*")
                         .allowCredentials(true);
