@@ -21,11 +21,9 @@ public class AuthenticationReceiverImpl implements AuthenticationReceiver {
         }
 
         String id = httpRequest.getId();
-        User savedUser = null;
 
-        if (repo.existsByEmail(id)) {
-            savedUser = repo.findByEmail(id);
-        } else if (repo.existsByNoTelp(id)) {
+        User savedUser = repo.findByEmail(id);
+        if (savedUser == null) {
             savedUser = repo.findByNoTelp(id);
         }
 
@@ -54,10 +52,16 @@ public class AuthenticationReceiverImpl implements AuthenticationReceiver {
             return false;
         }
 
-        if (repo.existsByEmail(httpRequest.getEmailAddress()) ||
-                repo.existsByNoTelp(httpRequest.getPhoneNumber())) {
+        User existingUserWithEmail = repo.findByEmail(httpRequest.getEmailAddress());
+        if (existingUserWithEmail != null) {
             return false;
         }
+
+        User existingUserWithPhoneNumber = repo.findByNoTelp(httpRequest.getPhoneNumber());
+        if (existingUserWithPhoneNumber != null) {
+            return false;
+        }
+
 
         User newUser = new User(
                 httpRequest.getName(),
