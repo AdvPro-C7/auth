@@ -1,32 +1,42 @@
 package id.ac.ui.cs.advprog.auth.service;
 
+import id.ac.ui.cs.advprog.auth.model.User;
+import id.ac.ui.cs.advprog.auth.repository.UserRepository;
+import id.ac.ui.cs.advprog.auth.service.builder.UserProfileManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import id.ac.ui.cs.advprog.auth.model.User;
-import id.ac.ui.cs.advprog.auth.service.builder.UserProfileManager;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.LocalDate;
 
-class UserProfileManagerTest {
-    private UserProfileManager userProfileManager;
-    private User user;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-    @SuppressWarnings("unused")
-    private String originalPhoto;
-    private String newPhoto;
+@ExtendWith(MockitoExtension.class)
+class UserProfileManagerTest {
+
+    @Mock
+    private UserRepository userRepository;
+
+    @InjectMocks
+    private UserProfileManager userProfileManager;
+
+    private User user;
 
     @BeforeEach
     void setUp() {
         user = new User("John Doe", "john@example.com", "0123456789", "password123");
-        userProfileManager = new UserProfileManager();
-        originalPhoto = "1"; 
+        // Ensure userRepository.save() returns the updated user object
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
     }
 
     @Test
     void testConstructNameProfile() {
-        String expectedNewName = "Jane D";
+        String expectedNewName = "Jane Doe";
         User updatedUser = userProfileManager.constructNameProfile(user, expectedNewName);
         assertEquals(expectedNewName, updatedUser.getNama(), "Name should be updated to Jane Doe.");
     }
@@ -40,7 +50,7 @@ class UserProfileManagerTest {
 
     @Test
     void testConstructPhotoProfile() {
-        newPhoto = "2"; // New photo data
+        String newPhoto = "newPhotoUrl";
         User updatedUser = userProfileManager.constructPhotoProfile(user, newPhoto);
         assertEquals(newPhoto, updatedUser.getFoto(), "Photo should be updated to the new string.");
     }
