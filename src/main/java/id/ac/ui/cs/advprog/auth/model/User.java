@@ -39,6 +39,7 @@ public class User {
     @Size(max = 128)
     private String password;
 
+    @Column(name = "foto")
     private String foto;
 
     @Column(name = "jenis_kelamin")
@@ -47,11 +48,13 @@ public class User {
     @Column(name = "tanggal_lahir")
     private LocalDate tanggalLahir;
 
+    @Column(name = "bio")
     private String bio;
 
     @Column(name = "jumlah_peringatan")
     private int jumlahPeringatan;
 
+    @Column(name = "role")
     private String role;
 
     public User(String nama, String email, String noTelp, String password) {
