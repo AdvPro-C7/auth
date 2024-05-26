@@ -34,13 +34,13 @@ public class AuthenticationReceiverImpl implements AuthenticationReceiver {
 
     @Override
     public User getUserDetails(String uid) {
-        if (repo.existsByEmail(uid)) {
-            return repo.findByEmail(uid);
-        } else if (repo.existsByNoTelp(uid)) {
-            return repo.findByNoTelp(uid);
+        User user = repo.findByEmail(uid);
+        if (user != null) {
+            return user;
         }
 
-        return null;
+        user = repo.findByNoTelp(uid);
+        return user;
     }
 
     @Override

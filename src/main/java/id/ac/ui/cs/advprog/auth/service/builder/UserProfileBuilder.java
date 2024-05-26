@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import id.ac.ui.cs.advprog.auth.model.User;
 
 public class UserProfileBuilder {
-    private User user;
+    private final User user;
 
     public UserProfileBuilder(User user) {
         this.user = user;

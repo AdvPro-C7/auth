@@ -2,7 +2,6 @@ package id.ac.ui.cs.advprog.auth.service.builder;
 
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import id.ac.ui.cs.advprog.auth.model.User;
 import id.ac.ui.cs.advprog.auth.repository.UserRepository;
@@ -10,14 +9,10 @@ import id.ac.ui.cs.advprog.auth.repository.UserRepository;
 @Service
 public class UserProfileManager {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public User constructProfilInfo(User user) {
-        userRepository.save(user);
-        return new UserProfileBuilder(user)
-                .updateInfo()
-                .build();
+    public UserProfileManager(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public User constructPhotoProfile(User user, String newPhoto) {

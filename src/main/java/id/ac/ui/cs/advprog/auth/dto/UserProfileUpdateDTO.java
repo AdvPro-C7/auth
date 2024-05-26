@@ -14,8 +14,6 @@ public class UserProfileUpdateDTO {
     private String photo;
     private String uid;
 
-    public UserProfileUpdateDTO() {}
-
     public UserProfileUpdateDTO(String name, LocalDate birthDate, String bio, String gender, String password, String photo, String uid) {
         this.name = name;
         this.birthDate = birthDate;

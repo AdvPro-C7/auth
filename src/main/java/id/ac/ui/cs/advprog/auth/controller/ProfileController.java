@@ -5,7 +5,6 @@ import id.ac.ui.cs.advprog.auth.model.User;
 import id.ac.ui.cs.advprog.auth.service.builder.UserProfileManager;
 import id.ac.ui.cs.advprog.auth.service.invoker.AuthenticationInvokerImpl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,19 +13,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/profile")
 public class ProfileController {
    
-    @Autowired
     private final AuthenticationInvokerImpl service;
+    private final UserProfileManager userProfileManager;
 
-    @Autowired
-    private UserProfileManager userProfileManager;
-
-    public ProfileController(AuthenticationInvokerImpl service) {
+    public ProfileController(AuthenticationInvokerImpl service, UserProfileManager userProfileManager) {
         this.service = service;
+        this.userProfileManager = userProfileManager;
     }
 
     @PatchMapping(value = "/updateProfile", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> updateProfile(
-        @RequestBody UserProfileUpdateDTO updates) throws Exception {
+        @RequestBody UserProfileUpdateDTO updates) {
 
         User user = this.service.getUserDetails(updates.getUid()); // Retrieve the user using UID
 
